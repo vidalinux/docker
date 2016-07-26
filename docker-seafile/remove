@@ -1,0 +1,4 @@
+docker stop myseafile
+docker rm myseafile
+docker stop mariadb
+docker rm mariadb

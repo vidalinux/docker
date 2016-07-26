@@ -1,0 +1,5 @@
+read -p "searching for string : " STRING
+
+DOCKER=$(docker images | grep $STRING | awk '{print $3}')
+
+for u in $DOCKER; do docker rmi $u; done
