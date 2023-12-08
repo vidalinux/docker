@@ -3,7 +3,7 @@ version: '2'
 services:
   server:
     container_name: freepbx_server
-    image: vidalinux/freepbx
+    image: docker.io/ovox/freepbx:17.0
     ports:
       - 443:443
       - 4445:4445
