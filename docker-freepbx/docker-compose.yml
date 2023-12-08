@@ -1,0 +1,81 @@
+version: '2'
+
+services:
+  server:
+    container_name: freepbx_server
+    image: vidalinux/freepbx
+    ports:
+      - 443:443
+      - 4445:4445
+      - 4569:4569/udp
+      - 5060
+      - 5060:5060/udp
+      - 5160:5160/udp
+      - 18000-18100:18000-18100/udp
+    environment:
+      - TZ=America/Puerto_Rico
+      - DB_USER=asterisk
+      - DB_PASS=asteriskpass
+      - DBENGINE=mysql
+      - DBNAME=asterisk 
+      - DBHOST=172.18.0.2 
+      - DBPORT=3306 
+      - CDRDBNAME=asteriskcdrdb 
+      - DBUSER=asterisk 
+      - DBPASS=asterisk 
+      - USER=asterisk 
+      - GROUP=asterisk 
+      - WEBROOT=/var/www/html 
+      - ASTETCDIR=/etc/asterisk 
+      - ASTMODDIR=/usr/lib64/asterisk/modules 
+      - ASTVARLIBDIR=/var/lib/asterisk 
+      - ASTAGIDIR=/var/lib/asterisk/agi-bin 
+      - ASTSPOOLDIR=/var/spool/asterisk 
+      - ASTRUNDIR=/var/run/asterisk 
+      - AMPBIN=/var/lib/asterisk/bin 
+      - AMPSBIN=/usr/sbin 
+      - AMPCGIBIN=/var/www/cgi-bin 
+      - AMPPLAYBACK=/var/lib/asterisk/playback 
+    volumes:
+      - ./certs:/etc/apache2/certs
+      - wwwvol:/var/www/html
+      - varvol:/var/lib/asterisk
+      - etcvol:/etc/asterisk
+      - usrvol:/usr/lib64/asterisk
+      - logvol:/var/log/asterisk
+    restart: always
+    networks:
+      asterisk:
+        ipv4_address: 172.18.0.3
+
+  mariadb:
+    container_name: freepbx_mariadb
+    image: mariadb:latest
+    restart: always
+    volumes:
+      - ./datadb:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      - TZ=America/Puerto_Rico
+      - MYSQL_ROOT_PASSWORD=asterisk
+    networks:
+      asterisk:
+        ipv4_address: 172.18.0.2
+
+volumes:
+  varvol:
+  etcvol:
+  usrvol:
+  wwwvol:
+  logvol:
+
+networks:
+ asterisk:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/24
+        gateway: 172.18.0.1

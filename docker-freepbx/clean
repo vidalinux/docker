@@ -1,0 +1,11 @@
+#!/bin/bash
+
+read -p "are you sure you want to delete all data : " QUESTION
+
+if [ ${QUESTION} = yes ];
+then
+rm -rf ./datadb
+docker volume rm docker-freepbx_etcvol docker-freepbx_usrvol docker-freepbx_varvol docker-freepbx_wwwvol
+else
+echo "no data deleted"
+fi
