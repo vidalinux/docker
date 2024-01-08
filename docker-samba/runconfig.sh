@@ -26,7 +26,6 @@ fi
 
 # set user and group on smb.conf
 
-sed -i "s|user = @samba|user = @${SMB_USER}|g" /etc/samba/smb.conf
 sed -i "s|valid users = @samba|valid users = @${SMB_GROUP}|g" /etc/samba/smb.conf
 sed -i "s|write list = @samba|write list = @${SMB_GROUP}|g" /etc/samba/smb.conf
 sed -i "s|force group = samba|force group = ${SMB_GROUP}|g" /etc/samba/smb.conf
