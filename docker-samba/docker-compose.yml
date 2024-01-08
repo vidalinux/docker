@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  server:
+    container_name: samba_server
+    image: vidalinux/sambaserver
+    ports:
+      - 445:445
+      - 445:445/udp
+      - 137-139:137-139/udp
+    environment:
+      - TZ=America/Puerto_Rico
+      - SMB_USER=samba
+      - SMB_PASS=mysambapass
+      - SMB_GROUP=samba
+    volumes:
+      - ./etc/samba:/etc/samba
+      - /share:/share
+    restart: always
+    networks:
+      samba:
+        ipv4_address: 172.24.0.2
+
+networks:
+ samba:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.24.0.0/24
+        gateway: 172.24.0.1
