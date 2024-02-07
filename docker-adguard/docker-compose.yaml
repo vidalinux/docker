@@ -25,8 +25,7 @@ services:
     volumes:
       - './work/:/opt/adguardhome/work/'
       - './conf/:/opt/adguardhome/conf/'
-#      - './certs/example.com.crt:/etc/ssl/example.com.crt'
-#      - './certs/example.com.key:/etc/ssl/example.com.key'
+      - './certs:/etc/adguard'
     networks:
       adguard:
         ipv4_address: 172.19.0.2
