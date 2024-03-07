@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  benji:
+    image: vidalinux/benji:0.1
+    container_name: benji_app
+    restart: always
+    volumes:
+      - /etc/ceph:/etc/ceph
+      - ./data:/benji/data
+      - ./config/benji.yaml:/benji/etc/benji.yaml
+      - ./db:/benji/db
+#      - /opt/benji/config/backup-ceph:/benji/scripts/backup-ceph
+#      - /opt/benji/config/crontab:/benji/etc/crontab

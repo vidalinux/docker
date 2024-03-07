@@ -1,0 +1,12 @@
+configurationVersion: '1'
+databaseEngine: sqlite:////benji/db/benji.sqlite
+defaultStorage: hdd
+storages:
+  - name: hdd
+    storageId: 1
+    module: file
+    configuration:
+      path: /benji/data
+ios:
+  - name: file
+    module: file
