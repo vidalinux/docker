@@ -1,0 +1,1 @@
+docker build --rm -t vidalinux/openuds-tunnel:0.2 .

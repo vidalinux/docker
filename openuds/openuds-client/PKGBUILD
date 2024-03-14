@@ -1,0 +1,20 @@
+# Maintainer: vidalinux <packages at vidinux dot com>
+pkgname=openuds-client-bin
+pkgver=3.6.0
+pkgrel=1
+pkgdesc="This package provides the required components to allow connection to services offered by UDS Broker."
+arch=('x86_64')
+url="https://github.com/dkmstr/openuds"
+_githuburl="https://git.altlinux.org/tasks/325672/build/100/x86_64/rpms"
+license=('BSD-3-Clause')
+depends=('freerdp' 'x2goclient' 'virt-viewer')
+source=("${_githuburl}/${pkgname%-bin}-${pkgver}-alt2.noarch.rpm")
+sha256sums=('7dee559a27afede925130b676eb70389de9b8e1d4da71df87c5fdce0918dd1e2')
+package() {
+    bsdtar -xf "${srcdir}/openuds-client-3.6.0-alt2.noarch.rpm"
+    sed -i s|#!/usr/bin/env python3|#!/usr/bin/python3|' \
+    $(find . -name '${srcdir}/usr/lib/UDSClient/*.py')
+    mkdir -p "${pkgdir}/usr/lib"
+    cp -rf "${srcdir}/usr/lib/UDSClient" "${pkgdir}/usr/lib/"
+    install -Dm644 "${srcdir}/usr/share/applications/UDSClient.desktop" -t "${pkgdir}/usr/share/applications"
+}

@@ -1,0 +1,100 @@
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>
+version: '3.2'
+services:
+  mariadb:
+      image: mariadb:10.7.7
+      container_name: openuds_mariadb
+      hostname: dbuds.ovox.io
+      restart: always
+      ports:
+        - '3306:3306/tcp'
+        - '3306:3306/udp'
+      cap_add:
+        - NET_ADMIN
+      environment:
+        - MYSQL_ROOT_PASSWORD=uds
+        - MYSQL_USER=uds
+        - MYSQL_DATABASE=udsdb
+        - MYSQL_PASSWORD=uds
+      volumes:
+        - ./mariadb-data:/var/lib/mysql
+      networks:
+        uds:
+          ipv4_address: 10.50.70.2
+      healthcheck:
+          test: [ "CMD", "mysqladmin", "-u", "root", "-puds", "ping", "-h", "localhost" ]
+          interval: 3s
+          timeout: 5s
+          retries: 5
+  openuds-server:
+      image: openuds-server:0.2
+      container_name: openuds_server
+      hostname: serveruds.ovox.io
+      ports:
+          - '80:80'
+          - '443:443'
+      environment:
+        - SSL_CRT=/etc/openuds/ssl/ovox.io.crt
+        - SSL_KEY=/etc/openuds/ssl/ovox.io.key
+        - MYSQL_USER=uds
+        - MYSQL_DATABASE=udsdb
+        - MYSQL_PASSWORD=uds
+      volumes:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - ./certs:/etc/openuds/ssl
+      tmpfs:
+        - /tmp
+        - /run
+      networks:
+        uds:
+          ipv4_address: 10.50.70.3
+      build: .
+      depends_on:
+        mariadb:
+          condition: service_healthy
+  openuds-tunnel:
+      image: openuds-tunnel:0.2
+      container_name: openuds_tunnel
+      hostname: tunneluds.ovox.io
+      ports:
+          - '10443:10443'
+          - '7777:7777'
+          - '8080:8080'
+          - '4822:4822'
+      environment:
+        - SSL_CRT=/etc/openuds-tunnel/ssl/ovox.io.crt
+        - SSL_KEY=/etc/openuds-tunnel/ssl/ovox.io.key
+        - SSL_CA=/etc/openuds-tunnel/ssl/ca.pem
+        - SERVER_HOST=serveruds.ovox.io
+        - TUNNEL_HOST=tunneluds.ovox.io
+        - TUNNEL_TOKEN=wdGTLFLpbwB4pkNlT_8lNdiR-sAQnelGPCLlKry2QfdjUMAP
+        - MYSQL_USER=uds
+        - MYSQL_DATABASE=udsdb
+        - MYSQL_PASSWORD=uds
+      volumes:
+        - ./certs:/etc/openuds-tunnel/ssl
+      networks:
+        uds:
+          ipv4_address: 10.50.70.4
+      build: .
+      depends_on:
+        mariadb:
+          condition: service_healthy
+
+networks:
+  uds:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.50.70.0/24

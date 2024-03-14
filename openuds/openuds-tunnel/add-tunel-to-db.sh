@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DATE=$(date +%F)
+TUNNEL_IP=10.50.70.2
+TUNNEL_USER=root
+TUNNEL_HOST=${TUNNEL_HOST}
+TUNNEL_TOKEN=${TUNNEL_TOKEN}
+MYSQL_DB=${MYSQL_DATABASE}
+MYSQL_TABLE=uds_tunneltoken
+MYSQL_USER=${MYSQL_USER}
+MYSQL_PASS=${MYSQL_PASSWORD}
+
+echo "adding tunnel token to database"
+mysql -u${MYSQL_USER} -p${MYSQL_PASS} -h ${TUNNEL_IP} -e "INSERT INTO ${MYSQL_DB}.${MYSQL_TABLE} VALUES (ID , '${TUNNEL_USER}' , '${TUNNEL_IP}' , '${TUNNEL_IP}' , '${TUNNEL_HOST}' , '${TUNNEL_TOKEN}', '${DATE}');"
