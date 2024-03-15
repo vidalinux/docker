@@ -50,6 +50,7 @@ services:
         - MYSQL_USER=uds
         - MYSQL_DATABASE=udsdb
         - MYSQL_PASSWORD=uds
+        - MYSQL_HOST=10.50.70.2
         - TIME_ZONE=America/Puerto_Rico
         - LANGUAGE_CODE=en
       volumes:

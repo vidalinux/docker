@@ -10,9 +10,10 @@ chown openuds.openuds /run/openuds
 fi
 
 # set database on settings.py
-sed -i "s|'NAME': 'udsdb'|'NAME': '${MYSQL_DATABASE}'|g" /etc/openuds/settings.py
-sed -i "s|'USER': 'uds'|'USER': '${MYSQL_USER}'|g" /etc/openuds/settings.py
-sed -i "s|'PASSWORD': 'uds'|'PASSWORD': '${MYSQL_PASSWORD}'|g" /etc/openuds/settings.py
+sed -i "s|'NAME': '*.*'|'NAME': '${MYSQL_DATABASE}'|g" /etc/openuds/settings.py
+sed -i "s|'USER': '*.*'|'USER': '${MYSQL_USER}'|g" /etc/openuds/settings.py
+sed -i "s|'PASSWORD': '*.*'|'PASSWORD': '${MYSQL_PASSWORD}'|g" /etc/openuds/settings.py
+sed -i "s|'HOST': '*.*'|'HOST': '${MYSQL_HOST}'|g" /etc/openuds/settings.py
 sed -i "s|TIME_ZONE = \ *.*|TIME_ZONE = '${TIME_ZONE}'|g" /etc/openuds/settings.py
 sed -i "s|LANGUAGE_CODE = \ *.*|LANGUAGE_CODE = '${LANGUAGE_CODE}'|g" /etc/openuds/settings.py
 
