@@ -13,6 +13,8 @@ fi
 sed -i "s|'NAME': 'udsdb'|'NAME': '${MYSQL_DATABASE}'|g" /etc/openuds/settings.py
 sed -i "s|'USER': 'uds'|'USER': '${MYSQL_USER}'|g" /etc/openuds/settings.py
 sed -i "s|'PASSWORD': 'uds'|'PASSWORD': '${MYSQL_PASSWORD}'|g" /etc/openuds/settings.py
+sed -i "s|TIME_ZONE = \ *.*|TIME_ZONE = '${TIME_ZONE}'|g" /etc/openuds/settings.py
+sed -i "s|LANGUAGE_CODE = \ *.*|LANGUAGE_CODE = '${LANGUAGE_CODE}'|g" /etc/openuds/settings.py
 
 # initialize database
 su -s /bin/bash - openuds -c "cd /usr/share/openuds; /usr/bin/python3 manage.py migrate"

@@ -38,7 +38,7 @@ services:
           timeout: 5s
           retries: 5
   openuds-server:
-      image: openuds-server:0.2
+      image: docker.io/ovox/openuds-server:0.2
       container_name: openuds_server
       hostname: serveruds.ovox.io
       ports:
@@ -50,6 +50,8 @@ services:
         - MYSQL_USER=uds
         - MYSQL_DATABASE=udsdb
         - MYSQL_PASSWORD=uds
+        - TIME_ZONE=America/Puerto_Rico
+        - LANGUAGE_CODE=en
       volumes:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
         - ./certs:/etc/openuds/ssl
@@ -64,7 +66,7 @@ services:
         mariadb:
           condition: service_healthy
   openuds-tunnel:
-      image: openuds-tunnel:0.2
+      image: docker.io/ovox/openuds-tunnel:0.2
       container_name: openuds_tunnel
       hostname: tunneluds.ovox.io
       ports:
