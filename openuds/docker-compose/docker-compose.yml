@@ -47,6 +47,7 @@ services:
       environment:
         - SSL_CRT=/etc/openuds/ssl/ovox.io.crt
         - SSL_KEY=/etc/openuds/ssl/ovox.io.key
+        - SSL_CA=/etc/openuds/ssl/ca.pem
         - MYSQL_USER=uds
         - MYSQL_DATABASE=udsdb
         - MYSQL_PASSWORD=uds
