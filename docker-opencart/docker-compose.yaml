@@ -1,0 +1,59 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - www_data:/var/www/html
+      - www_storage:/var/www/storage
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - APACHE_PORT=8080
+    networks:
+      opencart:
+        ipv4_address: 172.26.0.2
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlrootpass
+      MYSQL_DATABASE: mydbname
+      MYSQL_USER: mydbuser
+      MYSQL_PASSWORD: myuserdbpass
+    ports:
+      - "3306:3306" 
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      opencart:
+        ipv4_address: 172.26.0.3
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    networks:
+      opencart:
+        ipv4_address: 172.26.0.4
+
+networks:
+ opencart:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.26.0.0/24
+        gateway: 172.26.0.1
+
+volumes:
+  www_data:
+  www_storage:

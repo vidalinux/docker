@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DATE=$(date +%F)
+DB_USER=root
+DB_PASS=mydbroot
+DB_NAME=mydbname
+CON_NAME=opencart_docker-db-1
+BK_NAME=backup-${DB_NAME}-${DATE}
+BK_DIR=$PWD/backups
+
+docker exec -i ${CON_NAME} mariadb-dump -u${DB_USER} -p${DB_PASS} ${DB_NAME} > ${BK_DIR}/${BK_NAME}.sql
