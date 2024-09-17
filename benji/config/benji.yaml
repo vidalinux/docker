@@ -8,5 +8,5 @@ storages:
     configuration:
       path: /benji/data
 ios:
-  - name: file
-    module: file
+  - name: rbd
+    module: rbd
