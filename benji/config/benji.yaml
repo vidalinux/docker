@@ -10,3 +10,6 @@ storages:
 ios:
   - name: rbd
     module: rbd
+
+  - name: file
+    module: file
