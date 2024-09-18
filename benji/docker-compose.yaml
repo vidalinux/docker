@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   benji:
-    image: vidalinux/benji:0.1
+    image: docker.io/ovox/benji:0.1
     container_name: benji_app
     restart: always
     volumes:
