@@ -1,0 +1,39 @@
+
+server 10.10.88.244 iburst
+server 0.pool.ntp.org iburst
+server 1.pool.ntp.org iburst
+server 2.pool.ntp.org iburst
+server 3.pool.ntp.org iburst
+
+user chrony
+
+keyfile /etc/chrony.keys
+
+commandkey 1
+
+driftfile /var/lib/chrony/chrony.drift
+
+log tracking measurements statistics
+logdir /var/log/kolla/chrony
+
+makestep 3 3
+
+maxupdateskew 100.0
+
+dumponexit
+
+dumpdir /var/lib/chrony
+
+allow all
+# prevent chrony sync from self
+deny 10.10.88.244
+deny 10.10.88.58
+local stratum 10
+
+bindaddress 10.10.88.244
+
+logchange 0.5
+
+hwclockfile /etc/adjtime
+
+rtcsync

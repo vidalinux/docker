@@ -1,0 +1,1 @@
+docker build -t vidalinux/chrony:02.13.2025 .

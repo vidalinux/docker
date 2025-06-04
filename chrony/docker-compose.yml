@@ -1,0 +1,28 @@
+services:
+  chrony-alpine:
+    image: vidalinux/chrony:02.13.2025
+    container_name: chrony-alpine
+    restart: always
+    network_mode: "host"
+    environment:
+      - FOO=bar
+    cap_add:
+      - SYS_TIME
+      - SYS_NICE
+    volumes:
+      - ./chrony.conf:/etc/chrony/chrony.conf
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: "1.0"
+        reservations:
+          memory: 24M
+          cpus: "0.5"
+    healthcheck:
+      test: ["CMD", "/bin/sh", "-c", "/usr/bin/chronyc dump | grep 200"]
+      interval: 10s
+      retries: 3
+      start_period: 5s
+    ports:
+      - "123:123/udp"
