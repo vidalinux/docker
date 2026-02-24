@@ -1,0 +1,9 @@
+# first build the container
+
+bash build
+
+# start the container using docker compose
+
+docker compose up -d
+
+# if using openstack modify scripts on openstack directory  
