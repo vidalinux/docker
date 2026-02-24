@@ -1,1 +1,1 @@
-docker build --rm -t vidalinux/benji:0.1 . --network=host
+docker build --rm -t vidalinux/benji:latest . --network=host --no-cache
