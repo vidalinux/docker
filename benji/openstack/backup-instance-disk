@@ -1,0 +1,9 @@
+#!/bin/bash
+source /root/$OS_PROJECT_NAME-openrc.sh
+COMPUTES="oscpnode4 oscpnode5"
+INSTANCE=$(nova show $1 2>/dev/null|grep instance_name | awk '{print $4}')
+SSH_PORT=22
+DISKID=$(for u in $COMPUTES; do ssh -p${SSH_PORT} root@${u} "docker exec -i nova_libvirt virsh dumpxml ${INSTANCE} 2>/dev/null|grep vms/|head -n1|grep -oP 'vms/(.*?)_disk'|sed -e 's|^vms/||g'"; done)
+
+# benji
+docker exec -it benji_app benji backup rbd:vms/$DISKID $1

@@ -1,0 +1,13 @@
+#!/bin/bash
+source /root/admin-openrc.sh
+COMPUTES="oscpnode4 oscpnode5"
+SSH_PORT=22
+INSTANCE=$(nova show ${1} 2>/dev/null|grep instance_name|awk '{print $4}')
+if [ $# -eq 0 ]
+  then
+    echo "you need to specify instance name"
+    echo ""
+    echo "list-instance-disk cirros"; exit
+fi
+DISKID=$(for u in ${COMPUTES}; do ssh -p${SSH_PORT} root@${u} "docker exec -i nova_libvirt virsh dumpxml ${INSTANCE} 2>/dev/null|grep vms/|head -n1|grep -oP 'vms/(.*?)_disk'|sed -e 's|^vms/||g'"; done)
+echo ${DISKID}

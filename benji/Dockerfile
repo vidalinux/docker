@@ -3,7 +3,7 @@ FROM almalinux:9.3 AS build
 ARG CEPH_CODENAME="quincy"
 ARG CEPH_DISTRO="el9"
 
-ENV VENV_DIR /benji
+ENV VENV_DIR=/benji
 
 COPY ceph.repo /etc/yum.repos.d/ceph.repo
 RUN sed -i -e "s/{ceph-release}/$CEPH_CODENAME/" -e "s/{distro}/$CEPH_DISTRO/" /etc/yum.repos.d/ceph.repo
@@ -18,7 +18,7 @@ RUN rpm --import 'https://download.ceph.com/keys/release.asc' && \
 
 RUN python3 -m venv --system-site-packages $VENV_DIR && \
 	. $VENV_DIR/bin/activate && \
-	pip install --upgrade pip setuptools wheel && \
+	pip install --upgrade pip setuptools==80.0.0 wheel && \
 #	pip install git+https://github.com/elemental-lf/benji[compression,s3,readcache,b2]
         pip install benji[compression,s3,readcache,b2]==0.17.0
 FROM almalinux:9.3 AS runtime
@@ -28,9 +28,9 @@ ARG VCS_URL
 ARG VERSION 
 ARG BUILD_DATE
 
-ENV VENV_DIR /benji
+ENV VENV_DIR=/benji
 
-ENV PATH $VENV_DIR/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin
+ENV PATH=$VENV_DIR/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin
 
 LABEL org.label-schema.schema-version="1.0" \
 	org.label-schema.name="Benji" \
