@@ -1,3 +1,13 @@
+# make sure you have docker-compose or podman-compose installed
+
+## debian/ubuntu
+
+apt install -y podman-compose or apt install -y docker-compose
+
+## almalinux/redhat/rocky
+
+dnf install -y podman-compose
+
 # first build the container
 
 bash build
@@ -5,5 +15,9 @@ bash build
 # start the container using docker compose
 
 docker compose up -d
+
+# start the container using podman compose
+
+podman-compose up -d
 
 # if using openstack modify scripts on openstack directory  

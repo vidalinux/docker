@@ -4,7 +4,7 @@ services:
     container_name: benji_app
     restart: always
     volumes:
-      - /etc/ceph:/etc/ceph
+      - /etc/ceph:/etc/ceph:ro
       - ./data:/benji/data
       - ./config/benji.yaml:/benji/etc/benji.yaml
       - ./db:/benji/db
