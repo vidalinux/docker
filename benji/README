@@ -20,4 +20,32 @@ docker compose up -d
 
 podman-compose up -d
 
+# edit benji.bin and change container engine then copy this file to /usr/local/bin/
+
+cp benji.bin /usr/local/bin/
+chmod +x /usr/local/bin/
+
+# initiate database
+
+benji database-init
+
+# list benji backups 
+
+benji ls
+
+# backup qcow2 using benji
+
+benji backup file:////var/lib/libvirt/images/almalinux8.qcow2 almalinux8
+
+# restore to file using benji
+
+benji restore almalinux8-pytqkd file:////var/lib/libvirt/images/almalinux8-$(date +%F).qcow2
+
+# remove backup from benji database
+
+benji remove almalinux8-pytqkd --force
+
 # if using openstack modify scripts on openstack directory  
+
+cp openstack/* /usr/local/bin/
+chmod +x /usr/local/bin/*-instance-disk

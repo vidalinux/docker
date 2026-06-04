@@ -8,5 +8,6 @@ services:
       - ./data:/benji/data
       - ./config/benji.yaml:/benji/etc/benji.yaml
       - ./db:/benji/db
+      - /var/lib/libvirt/images:/var/lib/libvirt/images
 #      - /opt/benji/config/backup-ceph:/benji/scripts/backup-ceph
 #      - /opt/benji/config/crontab:/benji/etc/crontab

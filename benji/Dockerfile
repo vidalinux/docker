@@ -1,4 +1,4 @@
-FROM almalinux:9.3 AS build
+FROM almalinux:9 AS build
 
 ARG CEPH_CODENAME="quincy"
 ARG CEPH_DISTRO="el9"
@@ -21,7 +21,7 @@ RUN python3 -m venv --system-site-packages $VENV_DIR && \
 	pip install --upgrade pip setuptools==80.0.0 wheel && \
 #	pip install git+https://github.com/elemental-lf/benji[compression,s3,readcache,b2]
         pip install benji[compression,s3,readcache,b2]==0.17.0
-FROM almalinux:9.3 AS runtime
+FROM almalinux:9 AS runtime
 
 ARG VCS_REF
 ARG VCS_URL

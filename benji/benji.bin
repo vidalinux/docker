@@ -1,0 +1,6 @@
+#!/bin/bash
+
+NAME=benji_app
+ENGINE=docker
+
+${ENGINE} exec -it ${NAME} benji $@
