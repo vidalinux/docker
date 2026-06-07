@@ -22,7 +22,7 @@ podman-compose up -d
 
 # edit benji.bin and change container engine then copy this file to /usr/local/bin/
 
-cp benji.bin /usr/local/bin/
+cp benji.bin /usr/local/bin/benji
 chmod +x /usr/local/bin/
 
 # initiate database
